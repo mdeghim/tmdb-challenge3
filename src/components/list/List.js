@@ -21,10 +21,18 @@ export default class List extends Lightning.Component {
                 colorLeft: 0xff8ecea2, colorRight: 0xff03b3e4,
             },
             Metadata: {
-                /**
-                 * @todo: Your goal is to add a component that have multiple text labels,
-                 * 1 for the Title of the selected asset and 1 for the genre.
-                 */
+              alpha: 0.001,
+              Title: {
+                text : {
+                  text: '', fontSize: 48, fontFace: "SourceSansPro-Bold"
+                }
+              },
+              Genre: {
+                y: 55,
+                text: {
+                  text: '', fontSize: 24, fontFace: "SourceSansPro-Regular", textColor: 0xff43f0e7
+                }
+              }
             }
         }
     }
@@ -66,10 +74,35 @@ export default class List extends Lightning.Component {
         // update position
         this.tag("Items").setSmooth("x",  idx * -220 );
         this.fireAncestors('$onItemSelected',this.activeItem._item);
+        this.onItemSelected(this.activeItem._item)
     }
 
     set label(v) {
         // @todo: update list title
+    }
+
+    onItemSelected(i) {
+      console.log("Apply update on List cpnt %",i);
+      this.patch({
+          Metadata: {
+              y: -30,
+              alpha: 0.001,
+          }
+      });
+
+      this.tag("Metadata").tag("Title").patch({
+        text: { text: i.title }
+      });
+      this.tag("Metadata").tag("Genre").patch({
+        text: { text : '// TODO: ' }
+      })
+
+      this.tag("Title").on("txLoaded", ()=> {
+          console.log("texte updated");
+          this.patch({
+              Metadata:{smooth:{y:0, alpha :1}}
+          })
+      });
     }
 
     set movies(v) {

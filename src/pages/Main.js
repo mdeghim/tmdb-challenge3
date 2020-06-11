@@ -60,16 +60,20 @@ export default class Main extends Lightning.Component{
 
     $onItemSelected(i) {
       console.log(i);
-      const image = getImgUrl(i._backdrop_path, 500);
+      const path = i._backdrop_path
+      //const image = `//image.tmdb.org/${path}`
+      const image = `//image.tmdb.org/t/p/w500${path}`
       this.patch({
           Background: {
-              src: image
+              src: image,
+              scale: 1.2,
+              alpha: 0.001,
           }
       });
       this.tag("Background").on("txLoaded", ()=> {
           console.log("loaded");
           this.patch({
-              Background:{smooth:{scale:1}}
+              Background:{smooth:{scale:1, alpha :0.3}}
           })
       });
     }
