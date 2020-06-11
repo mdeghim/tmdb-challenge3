@@ -1,4 +1,4 @@
-import {Movie} from "./models";
+import {Movie, Serie} from "./models";
 
 const apiKey = `66683917a94e703e14ca150023f4ea7c`;
 let stage;
@@ -26,6 +26,19 @@ export const getMovies = async()=> {
     return [];
 };
 
+export const getSeries = async()=> {
+    const series = await get(`https://api.themoviedb.org/3/tv/popular?api_key=${apiKey}`);
+    const {results = []} = series;
+
+    if(results.length){
+        return results.map((data)=>{
+            return new Serie(data);
+        });
+    }
+
+    return [];
+};
+
 const get = (url)=> {
     return fetch(url, {
         'Accept': 'application/json'
@@ -33,4 +46,3 @@ const get = (url)=> {
         return response.json();
     })
 };
-

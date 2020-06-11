@@ -3,6 +3,7 @@ import Item from "../item";
 
 export default class List extends Lightning.Component {
     static _template() {
+
         return {
             Items: {
                 y: 120, forceZIndexContext: true, boundsMargin: [500, 100, 500, 100],
@@ -11,11 +12,13 @@ export default class List extends Lightning.Component {
                 }
             },
             Focus: {
-                /**
-                 * @ todo: Your goal is to add a focus indicator. Please take a look at the video
-                 * and inspect the rectanle frame that's before the focused movie item.
-                 * extra: Animate it a bit when the focus changes to the next item
-                 */
+                w : 250,
+                h : 360,
+                y : 115,
+                x:-35,
+                zIndex: 2,
+                texture: lng.Tools.getRoundRect(220, 345, 10, 6, 0xff03b3e4, true, 0x0000ffff),
+                colorLeft: 0xff8ecea2, colorRight: 0xff03b3e4,
             },
             Metadata: {
                 /**
@@ -28,6 +31,18 @@ export default class List extends Lightning.Component {
 
     _init() {
         this._index = 0;
+    }
+
+    _focus(){
+      this.tag("Focus").setSmooth("alpha",  1);
+    }
+
+    _active() {
+      this.setIndex(0)
+    }
+
+    _unfocus() {
+      this.tag("Focus").setSmooth("alpha",  0);
     }
 
     _handleLeft(){
@@ -50,6 +65,7 @@ export default class List extends Lightning.Component {
 
         // update position
         this.tag("Items").setSmooth("x",  idx * -220 );
+        this.fireAncestors('$onItemSelected',this.activeItem._item);
     }
 
     set label(v) {

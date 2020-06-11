@@ -130,7 +130,7 @@ export default class Item extends Lightning.Component {
                 }
             }
         });
-
+        
         this._focusAnimation.start();
     }
 
